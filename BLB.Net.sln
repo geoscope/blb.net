@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLB.Domain.Net", "BLB.Domain.Net\BLB.Domain.Net.csproj", "{A724912A-FB5B-420E-B3B8-A8E7C420CCD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLB.API.Tests.Net", "BLB.API.Tests.Net\BLB.API.Tests.Net.csproj", "{4AC4FF88-2433-4EEB-8016-DC46F42AA39A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLB.API.Tests.Net", "BLB.API.Tests.Net\BLB.API.Tests.Net.csproj", "{4AC4FF88-2433-4EEB-8016-DC46F42AA39A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

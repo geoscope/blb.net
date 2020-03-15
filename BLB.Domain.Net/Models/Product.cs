@@ -5,29 +5,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
-    public class Product : BaseEntity
+    public class Product : NamedBaseEntity
     {
-        [Required]
-        [StringLength(50)]
-        public string Code { get; set; }
-
         [Range(0, float.MaxValue)]
         public float CostPrice { get; set; }
 
         public string Description { get; set; }
 
-        [Required]
-        [StringLength(256)]
-        public string Name { get; set; }
-
         [Range(0, long.MaxValue)]
         public long PrimaryProductImageId { get; set; }
 
-        public ICollection<ProductAttribute> ProductAttributes { get; set; }
+        public ICollection<ProductAttribute> ProductAttributes { get; }
 
-        public ICollection<ProductImage> ProductImages { get; set; }
+        public ICollection<ProductInCategory> ProductCategories { get; }
 
-        public ICollection<ProductOption> ProductOptions { get; set; }
+        public ICollection<ProductImage> ProductImages { get; }
+
+        public ICollection<ProductOption> ProductOptions { get; }
 
         [Range(0, long.MaxValue)]
         public long? ProductSupplierId { get; set; }

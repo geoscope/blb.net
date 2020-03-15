@@ -6,8 +6,47 @@ namespace BLB.Domain.Net.Migrations
 {
     public partial class InitialCreate : Migration
     {
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            if (migrationBuilder == null)
+                throw new Exception("Null migration builder");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Pages");
+
+            migrationBuilder.DropTable(
+                name: "ProductAttributes");
+
+            migrationBuilder.DropTable(
+                name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "ProductOptions");
+
+            migrationBuilder.DropTable(
+                name: "UserInUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Stores");
+        }
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            if (migrationBuilder == null)
+                throw new Exception("Null migration builder");
+
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -292,39 +331,6 @@ namespace BLB.Domain.Net.Migrations
                 name: "IX_Users_StoreId",
                 table: "Users",
                 column: "StoreId");
-        }
-
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Pages");
-
-            migrationBuilder.DropTable(
-                name: "ProductAttributes");
-
-            migrationBuilder.DropTable(
-                name: "ProductImages");
-
-            migrationBuilder.DropTable(
-                name: "ProductOptions");
-
-            migrationBuilder.DropTable(
-                name: "UserInUserRoles");
-
-            migrationBuilder.DropTable(
-                name: "UserRoles");
-
-            migrationBuilder.DropTable(
-                name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Stores");
         }
     }
 }

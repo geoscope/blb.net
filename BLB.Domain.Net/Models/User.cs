@@ -11,6 +11,9 @@ namespace BLB.Domain.Net.Models
         [StringLength(256)]
         public string EmailAddress { get; set; }
 
+        [StringLength(256)]
+        public string ExternalUserId { get; set; }
+
         [Required]
         [StringLength(25)]
         public string FirstName { get; set; }
@@ -32,7 +35,10 @@ namespace BLB.Domain.Net.Models
         [ForeignKey("Store")]
         public long StoreId { get; set; }
 
-        public ICollection<UserInUserRole> UserInUserRoles { get; set; }
+        public ICollection<Address> UserAddresses { get; }
+
+        public ICollection<UserInUserRole> UserInUserRoles { get; }
+
         public DateTime? UserLockedEndDate { get; set; }
 
         [Required]

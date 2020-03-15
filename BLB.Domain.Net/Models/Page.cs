@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
@@ -14,5 +15,8 @@ namespace BLB.Domain.Net.Models
         public long? ParentPageId { get; set; }
 
         public DateTime? StartDate { get; set; }
+
+        [ForeignKey("Store")]
+        public long StoreId { get; set; }
     }
 }

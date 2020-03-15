@@ -21,9 +21,11 @@ namespace BLB.Domain.Net.Models
         [StringLength(256)]
         public string Name { get; set; }
 
+        public ICollection<Page> Pages { get; }
+
         [StringLength(512)]
         public string Summary { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<User> Users { get; }
     }
 }
