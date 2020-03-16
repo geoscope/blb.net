@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BLB.Domain.Net.Migrations
 {
     [DbContext(typeof(BLBDataContext))]
-    [Migration("20200313122945_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20200315122109_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,66 @@ namespace BLB.Domain.Net.Migrations
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.Address", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("City")
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<long>("CountryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Line1")
+                        .IsRequired()
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(10);
+
+                    b.Property<long>("StateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.Category", b =>
                 {
                     b.Property<long>("Id")
@@ -28,7 +88,8 @@ namespace BLB.Domain.Net.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<long?>("CategoryOwnerId")
+                    b.Property<long?>("CategoryStoreId")
+                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<string>("Code")
@@ -64,9 +125,126 @@ namespace BLB.Domain.Net.Migrations
                     b.Property<long?>("ParentCategoryId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("StoreId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("StoreId");
+
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Country", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Order", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("ShippingAddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ProductOptionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("BLB.Domain.Net.Models.Page", b =>
@@ -119,9 +297,70 @@ namespace BLB.Domain.Net.Migrations
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<long>("StoreId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("StoreId");
+
                     b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.PriceModifier", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long?>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<float?>("ExactMargin")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("ExactPrice")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<float?>("PercentMargin")
+                        .HasColumnType("real");
+
+                    b.Property<long?>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ProductOptionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PriceModifiers");
                 });
 
             modelBuilder.Entity("BLB.Domain.Net.Models.Product", b =>
@@ -133,8 +372,8 @@ namespace BLB.Domain.Net.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("character varying(25)")
+                        .HasMaxLength(25);
 
                     b.Property<float>("CostPrice")
                         .HasColumnType("real");
@@ -217,6 +456,11 @@ namespace BLB.Domain.Net.Migrations
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
                     b.Property<DateTime>("ModifiedAt")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp without time zone");
@@ -227,12 +471,7 @@ namespace BLB.Domain.Net.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("key")
-                        .IsRequired()
-                        .HasColumnType("character varying(256)")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("value")
+                    b.Property<string>("Value")
                         .HasColumnType("character varying(512)")
                         .HasMaxLength(512);
 
@@ -302,6 +541,28 @@ namespace BLB.Domain.Net.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.ProductInCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductInCategories");
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.ProductOption", b =>
                 {
                     b.Property<long>("Id")
@@ -352,6 +613,30 @@ namespace BLB.Domain.Net.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductOptions");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.State", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long>("CountryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("BLB.Domain.Net.Models.Store", b =>
@@ -410,6 +695,92 @@ namespace BLB.Domain.Net.Migrations
                     b.ToTable("Stores");
                 });
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.StoreDomainName", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("DomainName")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StoreId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreDomainNames");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.StoreSetting", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("StoreId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreSettings");
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.User", b =>
                 {
                     b.Property<long>("Id")
@@ -426,6 +797,10 @@ namespace BLB.Domain.Net.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("ExternalUserId")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
 
@@ -506,6 +881,8 @@ namespace BLB.Domain.Net.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("UserRoleId");
+
                     b.ToTable("UserInUserRoles");
                 });
 
@@ -544,6 +921,95 @@ namespace BLB.Domain.Net.Migrations
                     b.ToTable("UserRoles");
                 });
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.UserSetting", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleteted")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ModifiedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("character varying(512)")
+                        .HasMaxLength(512);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Address", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.User", null)
+                        .WithMany("UserAddresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Category", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Store", null)
+                        .WithMany("StoreCategories")
+                        .HasForeignKey("StoreId");
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Order", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.User", null)
+                        .WithMany("UserOrders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.OrderItem", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Order", null)
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.Page", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Store", null)
+                        .WithMany("StorePages")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.ProductAttribute", b =>
                 {
                     b.HasOne("BLB.Domain.Net.Models.Product", null)
@@ -560,6 +1026,21 @@ namespace BLB.Domain.Net.Migrations
                         .HasForeignKey("ProductId");
                 });
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.ProductInCategory", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Category", null)
+                        .WithMany("CategoryProducts")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BLB.Domain.Net.Models.Product", null)
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.ProductOption", b =>
                 {
                     b.HasOne("BLB.Domain.Net.Models.Product", null)
@@ -569,10 +1050,37 @@ namespace BLB.Domain.Net.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("BLB.Domain.Net.Models.State", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Country", null)
+                        .WithMany("States")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.StoreDomainName", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Store", null)
+                        .WithMany("StoreDomainNames")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.StoreSetting", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.Store", null)
+                        .WithMany("StoreSettings")
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BLB.Domain.Net.Models.User", b =>
                 {
                     b.HasOne("BLB.Domain.Net.Models.Store", null)
-                        .WithMany("Users")
+                        .WithMany("StoreUsers")
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -582,6 +1090,21 @@ namespace BLB.Domain.Net.Migrations
                 {
                     b.HasOne("BLB.Domain.Net.Models.User", null)
                         .WithMany("UserInUserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BLB.Domain.Net.Models.UserRole", null)
+                        .WithMany("Users")
+                        .HasForeignKey("UserRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BLB.Domain.Net.Models.UserSetting", b =>
+                {
+                    b.HasOne("BLB.Domain.Net.Models.User", null)
+                        .WithMany("UserSettings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

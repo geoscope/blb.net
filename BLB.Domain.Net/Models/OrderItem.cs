@@ -6,6 +6,10 @@ namespace BLB.Domain.Net.Models
     public class OrderItem : BaseEntity
     {
         [Required]
+        [ForeignKey("Order")]
+        public long OrderId { get; set; }
+
+        [Required]
         [ForeignKey("Product")]
         public long ProductId { get; set; }
 

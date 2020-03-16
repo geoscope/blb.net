@@ -3,15 +3,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
-    public class ProductAttribute : BaseEntity
+    public class UserSetting : BaseEntity
     {
         [Required]
         [StringLength(256)]
         public string Key { get; set; }
 
         [Required]
-        [ForeignKey("Product")]
-        public long ProductId { get; set; }
+        [ForeignKey("User")]
+        public long UserId { get; set; }
 
         [StringLength(512)]
         public string Value { get; set; }

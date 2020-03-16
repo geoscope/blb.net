@@ -21,11 +21,16 @@ namespace BLB.Domain.Net.Models
         [StringLength(256)]
         public string Name { get; set; }
 
-        public ICollection<Page> Pages { get; }
+        public ICollection<Category> StoreCategories { get; }
+
+        public ICollection<StoreDomainName> StoreDomainNames { get; }
+
+        public ICollection<Page> StorePages { get; }
+
+        public ICollection<StoreSetting> StoreSettings { get; }
+        public ICollection<User> StoreUsers { get; }
 
         [StringLength(512)]
         public string Summary { get; set; }
-
-        public ICollection<User> Users { get; }
     }
 }

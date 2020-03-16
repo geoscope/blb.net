@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
     public class Category : NamedBaseEntity
     {
-        [Range(1, long.MaxValue)]
-        public long? CategoryOwnerId { get; set; }
-
         public ICollection<ProductInCategory> CategoryProducts { get; }
+
+        [Required]
+        [ForeignKey("Store")]
+        public long? CategoryStoreId { get; set; }
 
         [Range(1, long.MaxValue)]
         public long? ParentCategoryId { get; set; }

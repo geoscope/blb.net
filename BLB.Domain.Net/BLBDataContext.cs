@@ -8,16 +8,26 @@ namespace BLB.Domain.Net
 {
     internal class BLBDataContext : DbContext
     {
+        public DbSet<Address> Addresses { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<PriceModifier> PriceModifiers { get; set; }
         public DbSet<ProductAttribute> ProductAttributes { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductInCategory> ProductInCategories { get; set; }
         public DbSet<ProductOption> ProductOptions { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<StoreDomainName> StoreDomainNames { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<StoreSetting> StoreSettings { get; set; }
         public DbSet<UserInUserRole> UserInUserRoles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserSetting> UserSettings { get; set; }
 
         public override int SaveChanges()
         {
