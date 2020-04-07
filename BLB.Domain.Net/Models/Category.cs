@@ -10,7 +10,7 @@ namespace BLB.Domain.Net.Models
 
         [Required]
         [ForeignKey("Store")]
-        public long? CategoryStoreId { get; set; }
+        public long StoreId { get; set; }
 
         [Range(1, long.MaxValue)]
         public long? ParentCategoryId { get; set; }

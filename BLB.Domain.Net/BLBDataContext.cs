@@ -25,6 +25,7 @@ namespace BLB.Domain.Net
         public DbSet<Store> Stores { get; set; }
         public DbSet<StoreSetting> StoreSettings { get; set; }
         public DbSet<UserInUserRole> UserInUserRoles { get; set; }
+        public DbSet<UserInStore> UserInStores { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserSetting> UserSettings { get; set; }
@@ -100,6 +101,10 @@ namespace BLB.Domain.Net
 
             modelBuilder.Entity<ProductAttribute>()
                 .HasIndex(p => p.ProductId);
+
+            modelBuilder.Entity<StoreDomainName>()
+                .HasIndex(b => b.DomainName)
+                .IsUnique();
 
             #endregion "Indexes"
         }

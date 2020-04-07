@@ -28,6 +28,7 @@ namespace BLB.Domain.Net.Models
         public ICollection<Page> StorePages { get; }
 
         public ICollection<StoreSetting> StoreSettings { get; }
+
         public ICollection<User> StoreUsers { get; }
 
         [StringLength(512)]

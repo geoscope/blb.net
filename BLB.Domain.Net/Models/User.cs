@@ -32,9 +32,6 @@ namespace BLB.Domain.Net.Models
         [StringLength(256)]
         public string Password { get; set; }
 
-        [ForeignKey("Store")]
-        public long StoreId { get; set; }
-
         public ICollection<Address> UserAddresses { get; }
 
         public ICollection<UserInUserRole> UserInUserRoles { get; }

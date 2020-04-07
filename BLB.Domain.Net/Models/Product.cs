@@ -7,13 +7,14 @@ namespace BLB.Domain.Net.Models
 {
     public class Product : NamedBaseEntity
     {
+        [Required]
         [Range(0, float.MaxValue)]
         public float CostPrice { get; set; }
 
         public string Description { get; set; }
 
         [Range(0, long.MaxValue)]
-        public long PrimaryProductImageId { get; set; }
+        public long? PrimaryProductImageId { get; set; }
 
         public ICollection<ProductAttribute> ProductAttributes { get; }
 
@@ -32,10 +33,10 @@ namespace BLB.Domain.Net.Models
         public DateTime? StockBackOrderEstimatedArrival { get; set; }
 
         [Range(0, int.MaxValue)]
-        public int StockOnBackOrder { get; set; }
+        public int? StockOnBackOrder { get; set; }
 
         [Range(0, int.MaxValue)]
-        public int StockOnHand { get; set; }
+        public int? StockOnHand { get; set; }
 
         [Range(0, int.MaxValue)]
         public int? StockReorderLevel { get; set; }

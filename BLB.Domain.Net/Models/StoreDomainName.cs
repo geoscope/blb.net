@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
@@ -6,6 +7,7 @@ namespace BLB.Domain.Net.Models
     {
         public string DomainName { get; set; }
 
+        [Required]
         [ForeignKey("Store")]
         public long StoreId { get; set; }
     }

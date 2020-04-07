@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BLB.Domain.Net.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,15 @@ namespace BLB.Domain.Net.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<long>(nullable: false),
+                    IsDeleteted = table.Column<bool>(nullable: false),
                     IsEnabled = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: true)
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<long>(nullable: false),
+                    LongCode = table.Column<string>(maxLength: 3, nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    ShortCode = table.Column<string>(maxLength: 2, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,12 +71,12 @@ namespace BLB.Domain.Net.Migrations
                     Name = table.Column<string>(maxLength: 256, nullable: false),
                     CostPrice = table.Column<float>(nullable: false),
                     Description = table.Column<string>(nullable: true),
-                    PrimaryProductImageId = table.Column<long>(nullable: false),
+                    PrimaryProductImageId = table.Column<long>(nullable: true),
                     ProductSupplierId = table.Column<long>(nullable: true),
                     Sku = table.Column<string>(maxLength: 50, nullable: true),
                     StockBackOrderEstimatedArrival = table.Column<DateTime>(nullable: true),
-                    StockOnBackOrder = table.Column<int>(nullable: false),
-                    StockOnHand = table.Column<int>(nullable: false),
+                    StockOnBackOrder = table.Column<int>(nullable: true),
+                    StockOnHand = table.Column<int>(nullable: true),
                     StockReorderLevel = table.Column<int>(nullable: true),
                     StoreId = table.Column<long>(nullable: false)
                 },
@@ -103,6 +110,20 @@ namespace BLB.Domain.Net.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserInStores",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<long>(nullable: false),
+                    StoreId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserInStores", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -127,9 +148,16 @@ namespace BLB.Domain.Net.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CountryId = table.Column<long>(nullable: false),
+                    CreatedAt = table.Column<DateTime>(nullable: false),
+                    CreatedBy = table.Column<long>(nullable: false),
+                    IsDeleteted = table.Column<bool>(nullable: false),
                     IsEnabled = table.Column<bool>(nullable: false),
-                    Name = table.Column<string>(maxLength: 256, nullable: true)
+                    ModifiedAt = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<long>(nullable: false),
+                    LongCode = table.Column<string>(maxLength: 3, nullable: true),
+                    Name = table.Column<string>(maxLength: 256, nullable: false),
+                    ShortCode = table.Column<string>(maxLength: 2, nullable: true),
+                    CountryId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,9 +270,8 @@ namespace BLB.Domain.Net.Migrations
                     ModifiedBy = table.Column<long>(nullable: false),
                     Code = table.Column<string>(maxLength: 25, nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: false),
-                    CategoryStoreId = table.Column<long>(nullable: false),
-                    ParentCategoryId = table.Column<long>(nullable: true),
-                    StoreId = table.Column<long>(nullable: true)
+                    StoreId = table.Column<long>(nullable: false),
+                    ParentCategoryId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -254,7 +281,7 @@ namespace BLB.Domain.Net.Migrations
                         column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -361,10 +388,10 @@ namespace BLB.Domain.Net.Migrations
                     IsUserVerified = table.Column<bool>(nullable: true),
                     LastName = table.Column<string>(maxLength: 25, nullable: true),
                     Password = table.Column<string>(maxLength: 256, nullable: false),
-                    StoreId = table.Column<long>(nullable: false),
                     UserLockedEndDate = table.Column<DateTime>(nullable: true),
                     UserName = table.Column<string>(maxLength: 256, nullable: false),
-                    UserSalt = table.Column<string>(maxLength: 50, nullable: false)
+                    UserSalt = table.Column<string>(maxLength: 50, nullable: false),
+                    StoreId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -374,7 +401,7 @@ namespace BLB.Domain.Net.Migrations
                         column: x => x.StoreId,
                         principalTable: "Stores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -599,6 +626,12 @@ namespace BLB.Domain.Net.Migrations
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StoreDomainNames_DomainName",
+                table: "StoreDomainNames",
+                column: "DomainName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StoreDomainNames_StoreId",
                 table: "StoreDomainNames",
                 column: "StoreId");
@@ -663,6 +696,9 @@ namespace BLB.Domain.Net.Migrations
 
             migrationBuilder.DropTable(
                 name: "StoreSettings");
+
+            migrationBuilder.DropTable(
+                name: "UserInStores");
 
             migrationBuilder.DropTable(
                 name: "UserInUserRoles");
