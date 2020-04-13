@@ -7,7 +7,7 @@ namespace BLB.Api.Net.Controllers.v1
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/v1/Categories/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
@@ -20,20 +20,20 @@ namespace BLB.Api.Net.Controllers.v1
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/v1//5
+        // GET: api/v1/Categories/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST: api/Categories
+        // POST: api/v1/Categories
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/v1/Categories/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
