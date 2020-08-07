@@ -4,6 +4,5 @@
     {
         public string Name { get; set; }
         public long? ParentCategoryId { get; set; }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using BLB.Domain.Net.Models.Enum;
+﻿using BLB.Domain.Net.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace BLB.Domain.Net.Models

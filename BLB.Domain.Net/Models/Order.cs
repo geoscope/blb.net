@@ -1,4 +1,4 @@
-﻿using BLB.Domain.Net.Models.Enum;
+﻿using BLB.Domain.Net.Models.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

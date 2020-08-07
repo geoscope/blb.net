@@ -1,46 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BLB.Api.Net.Interfaces;
+using BLB.Api.Net.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BLB.Api.Net.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class UsersController : Controller
     {
-        // GET: api/values
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IUserService userService;
+
+        public UsersController(IUserService userService)
         {
-            return new string[] { "value1", "value2" };
+            this.userService = userService;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] AuthenticateRequest model)
         {
-            return "value";
+            var response = userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
         }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [Authorize]
+        [HttpGet("test-authentication")]
+        public IActionResult TestAuthentication()
         {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return Ok("You are authenticated");
         }
     }
 }
