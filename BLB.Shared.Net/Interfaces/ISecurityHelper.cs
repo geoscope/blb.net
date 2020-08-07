@@ -1,10 +1,8 @@
-﻿using System;
+﻿
 namespace BLB.Shared.Net.Interfaces
 {
-    public class ISecurityHelper
+    public interface ISecurityHelper
     {
-        public ISecurityHelper()
-        {
-        }
+        string HashPassword(string password, string systemSalt, string userSalt);
     }
 }

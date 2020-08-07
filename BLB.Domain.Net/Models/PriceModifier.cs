@@ -1,5 +1,4 @@
-﻿using BLB.Domain.Net.Models.Enum;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models

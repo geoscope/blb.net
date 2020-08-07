@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BLB.Domain.Net.Models;
 
 namespace BLB.Domain.Net.Interfaces
 {
-    public interface ICategoryRepository : IStoreGenericRepository<Category>
+    public interface IUserRepository : IGenericRepository<User>
     {
-        IEnumerable<Category> GetSingleWithChildren(long storeId, long parentCategoryId);
+        User GetByUserName(string username);
 
-        Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long parentCategoryId);
+        Task<User> GetByUserNameAsync(string username);
+
+        User AuthenticateUser(string username, string password);
+
+        Task<User> AuthenticateUserAsync(string username, string password);
     }
 }

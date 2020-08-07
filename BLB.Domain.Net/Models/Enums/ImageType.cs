@@ -1,4 +1,4 @@
-﻿namespace BLB.Domain.Net.Models.Enum
+﻿namespace BLB.Domain.Net.Models.Enums
 {
     public enum ImageType
     {

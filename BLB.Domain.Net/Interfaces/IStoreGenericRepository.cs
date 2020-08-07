@@ -3,26 +3,26 @@ using System.Threading.Tasks;
 
 namespace BLB.Domain.Net.Interfaces
 {
-    public interface IGenericRepository<T>
+    public interface IStoreGenericRepository<T>
     {
-        T GetSingle(long id);
+        T GetSingle(long storeId, long id);
 
-        Task<T> GetSingleAsync(long id);
+        Task<T> GetSingleAsync(long storeId, long id);
 
-        IEnumerable<T> GetAllRecords();
+        IEnumerable<T> GetAll(long storeId);
 
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync(long storeId);
 
-        long Add(T record);
+        long Add(long storeId, T record);
 
-        Task<long> AddAsync(T record);
+        Task<long> AddAsync(long storeId, T record);
 
-        bool Update(T record);
+        bool Update(long storeId, T record);
 
-        Task<bool> UpdateAsync(T record);
+        Task<bool> UpdateAsync(long storeId, T record);
 
-        bool Delete(T record);
+        bool Delete(long storeId, T record);
 
-        Task<bool> DeleteAsync(T record);
+        Task<bool> DeleteAsync(long storeId, T record);
     }
 }
