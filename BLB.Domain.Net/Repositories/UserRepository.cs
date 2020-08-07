@@ -1,9 +1,9 @@
 ﻿using System;
 namespace BLB.Domain.Net.Repositories
 {
-    public class CategoryRepository
+    public class UserRepository
     {
-        public CategoryRepository()
+        public UserRepository()
         {
         }
     }

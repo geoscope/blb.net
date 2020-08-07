@@ -1,7 +1,5 @@
-﻿using BLB.Api.Net.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BLB.Api.Net.Controllers.v1
 {
@@ -9,15 +7,6 @@ namespace BLB.Api.Net.Controllers.v1
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryService categoryService;
-        private readonly IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator;
-
-        public CategoriesController(ICategoryService categoryService, IGenericHydrator<Domain.Net.Models.Category,Domain.Net.Models.Dto.Category> categoryDtoHydrator)
-        {
-            this.categoryService = categoryService;
-            this.categoryDtoHydrator = categoryDtoHydrator;
-        }
-
         // DELETE: api/v1/Categories/5
         [HttpDelete("{id}")]
         public void Delete(int id)
@@ -26,10 +15,9 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/Categories
         [HttpGet]
-        public IEnumerable<Domain.Net.Models.Dto.Category> Get()
+        public IEnumerable<string> Get()
         {
-            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetAllCategories(1).ToList());
-            return categoriesDto;
+            return new string[] { "value1", "value2" };
         }
 
         // GET: api/v1/Categories/5
