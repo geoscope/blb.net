@@ -28,7 +28,7 @@ We're starting small, but dreaming big :-)
   2. Make sure that you have dotnet core SDK 3.1.x installed
   3. Install entity framework core if you have not done so already using `dotnet tool install --global dotnet-ef`
   4. On a command prompt (Powershell, Git bash or even cmd) create an environment variable to contain your db connection string. On windows this should be something like: 
-   `set BLBConnectionString=Username=postgres;Password=postgrespassword;Host=localhost;Port=5432;Database=BigLittleBuy;Pooling=true;Minimum Pool Size=0;Maximum Pool Size=100;Connection Idle Lifetime=0;`
+   `set BLBConnectionString=Username=postgres;Password=postgrespassword;Host=localhost;Port=5432;Database=BigLittleBuy;Pooling=true;Min Pool Size=0;Max Pool Size=100;Connection Lifetime=0;`
   5. From the BLB.Domain.Net directory run the database migrations: `dotnet ef database update --startup-project ..\BLB.Api.Net\BLB.Api.Net.csproj`
   6. MORE TO COME...
   

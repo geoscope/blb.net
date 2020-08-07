@@ -9,7 +9,7 @@ namespace BLB.Domain.Net.Interfaces
 
         Task<T> GetSingleAsync(long id);
 
-        IEnumerable<T> GetAll();
+        IEnumerable<T> GetAllRecords();
 
         Task<IEnumerable<T>> GetAllAsync();
 

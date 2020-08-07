@@ -1,8 +1,3 @@
-using BLB.Api.Net.Hydrators;
-using BLB.Api.Net.Interfaces;
-using BLB.Api.Net.Services;
-using BLB.Domain.Net.Interfaces;
-using BLB.Domain.Net.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,12 +27,12 @@ namespace BLB.Api.Net
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecks("/api/health");
             });
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -50,10 +45,6 @@ namespace BLB.Api.Net
         {
             services.AddControllers();
             services.AddHealthChecks();
-
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category>, CategoryDtoHydrator>();
         }
     }
 }

@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using BLB.Domain.Net.Models;
-
+﻿using System;
 namespace BLB.Domain.Net.Interfaces
 {
-    public interface ICategoryRepository : IStoreGenericRepository<Category>
+    public interface ICategoryRepository
     {
-        IEnumerable<Category> GetSingleWithChildren(long storeId, long parentCategoryId);
-
-        Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long parentCategoryId);
     }
 }
