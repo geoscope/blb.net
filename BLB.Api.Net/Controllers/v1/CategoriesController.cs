@@ -9,47 +9,47 @@ namespace BLB.Api.Net.Controllers.v1
     [ApiController]
     public class CategoriesController : ControllerBase
     {
+        const long storeId = 1;
+
         private readonly ICategoryService categoryService;
         private readonly IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator;
 
-        public CategoriesController(ICategoryService categoryService, IGenericHydrator<Domain.Net.Models.Category,Domain.Net.Models.Dto.Category> categoryDtoHydrator)
+        public CategoriesController(ICategoryService categoryService, IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator)
         {
             this.categoryService = categoryService;
             this.categoryDtoHydrator = categoryDtoHydrator;
         }
 
-        // DELETE: api/v1/Categories/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
-        // GET: api/v1/Categories
+        // GET: api/v1/categories
         [HttpGet]
         public IEnumerable<Domain.Net.Models.Dto.Category> Get()
         {
-            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetAllCategories(1).ToList());
+            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetAllCategories(storeId).ToList());
             return categoriesDto;
         }
 
-        // GET: api/v1/Categories/5
-        [HttpGet("{id}", Name = "Get")]
+        // GET: api/v1/categories/5
+        [HttpGet("{id}")]
         public Domain.Net.Models.Dto.Category Get(int id)
         {
-            var categoryDto = categoryDtoHydrator.Hydrate(categoryService.GetCategory(1, id));
+            var categoryDto = categoryDtoHydrator.Hydrate(categoryService.GetCategory(storeId, id));
             return categoryDto;
         }
 
-        // POST: api/v1/Categories
-        [HttpPost]
-        public void Post([FromBody] string value)
+        // GET: api/v1/categories/1/children
+        [HttpGet("{id}/children")]
+        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithChildren(int id)
         {
+            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithChildren(storeId, id).ToList());
+            return categoriesDto;
         }
 
-        // PUT: api/v1/Categories/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // GET: api/v1/categories/1/parents
+        [HttpGet("{id}/parents")]
+        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithParents(int id)
         {
+            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithParents(storeId, id).ToList());
+            return categoriesDto;
         }
     }
 }

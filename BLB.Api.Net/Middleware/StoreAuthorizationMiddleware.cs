@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using System.Globalization;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace BLB.Api.Net.Middleware
@@ -14,19 +14,17 @@ namespace BLB.Api.Net.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext context)
         {
+            if (context.Request.Headers["x-store-id"].Count == 1 && !string.IsNullOrWhiteSpace(context.Request.Headers["x-store-id"][0].ToString()))
+            {
+                if (long.TryParse(context.Request.Headers["x-store-id"].ToString(), out long storeId))
+                {
 
-            return _next(httpContext);
-        }
-    }
+                }
+            }
 
-    // Extension method used to add the middleware to the HTTP request pipeline.
-    public static class StoreAuthorizationMiddlewareExtensions
-    {
-        public static IApplicationBuilder UseMiddlewareClassTemplate(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<StoreAuthorizationMiddleware>();
+            await _next(context);
         }
     }
 }

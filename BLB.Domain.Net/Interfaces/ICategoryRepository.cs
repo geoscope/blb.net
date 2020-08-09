@@ -6,8 +6,12 @@ namespace BLB.Domain.Net.Interfaces
 {
     public interface ICategoryRepository : IStoreGenericRepository<Category>
     {
-        IEnumerable<Category> GetSingleWithChildren(long storeId, long parentCategoryId);
+        IEnumerable<Category> GetSingleWithChildren(long storeId, long categoryId);
 
-        Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long parentCategoryId);
+        Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long categoryId);
+
+        IEnumerable<Category> GetSingleWithParents(long storeId, long categoryId);
+
+        Task<IEnumerable<Category>> GetSingleWithParentsAsync(long storeId, long categoryId);
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BLB.Domain.Net.Interfaces;
 using BLB.Domain.Net.Models;
 using Dapper;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -87,14 +88,44 @@ namespace BLB.Domain.Net.Repositories
             }
         }
 
-        public IEnumerable<Category> GetSingleWithChildren(long storeId, long parentCategoryId)
+        public IEnumerable<Category> GetSingleWithChildren(long storeId, long categoryId)
         {
-            throw new NotImplementedException();
+            string sql = @"WITH RECURSIVE category_tree AS (
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId"" 
+                    FROM ""Categories"" c WHERE c.""Id"" = @catgoryId and c.""StoreId"" = @storeId
+                UNION
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId""
+                    FROM ""Categories"" c
+                    JOIN category_tree ON (c.""ParentCategoryId"" = category_tree.""Id"") AND c.""StoreId"" = @storeId
+            )
+            SELECT * FROM category_tree;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var categories = conn.Query<Category>(sql, new { storeId, categoryId });
+
+                return categories;
+            }
         }
 
-        public Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long parentCategoryId)
+        public async Task<IEnumerable<Category>> GetSingleWithChildrenAsync(long storeId, long categoryId)
         {
-            throw new NotImplementedException();
+            string sql = @"WITH RECURSIVE category_tree AS (
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId"" 
+                    FROM ""Categories"" c WHERE c.""Id"" = @catgoryId and c.""StoreId"" = @storeId
+                UNION
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId""
+                    FROM ""Categories"" c
+                    JOIN category_tree ON (c.""ParentCategoryId"" = category_tree.""Id"") AND c.""StoreId"" = @storeId
+            )
+            SELECT * FROM category_tree;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var categories = await conn.QueryAsync<Category>(sql, new { storeId, categoryId });
+
+                return categories;
+            }
         }
 
         public bool Update(long storeId, Category record)
@@ -105,6 +136,44 @@ namespace BLB.Domain.Net.Repositories
         public Task<bool> UpdateAsync(long storeId, Category record)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Category> GetSingleWithParents(long storeId, long categoryId)
+        {
+            string sql = @"WITH RECURSIVE category_tree AS (
+                SELECT c.""Id"", c.""Name"" , c.""ParentCategoryId"" FROM ""Categories"" c WHERE c.""Id""=@categoryId AND c.""StoreId""=@storeId 
+                    UNION
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId""
+                    FROM ""Categories"" c
+                    JOIN category_tree ON (c.""Id"" = category_tree.""ParentCategoryId"") AND c.""StoreId""=@storeId
+                )
+                SELECT * FROM category_tree;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var categories = conn.Query<Category>(sql, new { storeId, categoryId });
+
+                return categories;
+            }
+        }
+
+        public async Task<IEnumerable<Category>> GetSingleWithParentsAsync(long storeId, long categoryId)
+        {
+            string sql = @"WITH RECURSIVE category_tree AS (
+                SELECT c.""Id"", c.""Name"" , c.""ParentCategoryId"" FROM ""Categories"" c WHERE c.""Id""=@categoryId AND c.""StoreId""=@storeId 
+                    UNION
+                SELECT c.""Id"", c.""Name"", c.""ParentCategoryId""
+                    FROM ""Categories"" c
+                    JOIN category_tree ON (c.""Id"" = category_tree.""ParentCategoryId"") AND c.""StoreId""=@storeId
+                )
+                SELECT * FROM category_tree;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var categories = await conn.QueryAsync<Category>(sql, new { storeId, categoryId });
+
+                return categories;
+            }
         }
     }
 }
