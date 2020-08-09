@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BLB.Api.Net
@@ -52,6 +51,7 @@ namespace BLB.Api.Net
 
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
+            app.UseMiddleware<StoreAuthorizationMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
@@ -95,6 +95,12 @@ namespace BLB.Api.Net
 
             services.AddControllers();
             services.AddHealthChecks();
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = appSettings.CacheHost;
+                options.InstanceName = appSettings.CacheInstanceName;
+            });
 
             services.AddSingleton<ISecurityHelper, SecurityHelper>();
 
