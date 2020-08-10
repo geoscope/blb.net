@@ -23,7 +23,7 @@ namespace BLB.Domain.Net.Models
 
         public ICollection<Category> StoreCategories { get; }
 
-        public ICollection<StoreDomainName> StoreDomainNames { get; }
+        public ICollection<StoreHostName> StoreDomainNames { get; }
 
         public ICollection<Page> StorePages { get; }
 

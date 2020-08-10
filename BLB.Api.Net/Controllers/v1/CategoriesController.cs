@@ -1,4 +1,5 @@
 ﻿using BLB.Api.Net.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,19 @@ namespace BLB.Api.Net.Controllers.v1
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        const long storeId = 1;
-
+        private readonly long storeId;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ICategoryService categoryService;
         private readonly IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator;
 
-        public CategoriesController(ICategoryService categoryService, IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator)
+        public CategoriesController(IHttpContextAccessor httpContextAccessor, ICategoryService categoryService, IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category> categoryDtoHydrator)
         {
+            this.httpContextAccessor = httpContextAccessor;
             this.categoryService = categoryService;
             this.categoryDtoHydrator = categoryDtoHydrator;
+
+            var storeIdObj = this.httpContextAccessor.HttpContext.Items["storeId"];
+            this.storeId = long.Parse(storeIdObj.ToString());
         }
 
         // GET: api/v1/categories

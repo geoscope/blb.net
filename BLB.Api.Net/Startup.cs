@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using BLB.Api.Net.Hydrators;
+using BLB.Api.Net.interfaces;
 using BLB.Api.Net.Interfaces;
 using BLB.Api.Net.Middleware;
 using BLB.Api.Net.Services;
@@ -12,6 +13,7 @@ using BLB.Shared.Net.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -51,7 +53,7 @@ namespace BLB.Api.Net
 
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
-            app.UseMiddleware<StoreAuthorizationMiddleware>();
+            app.UseMiddleware<StoreAssignmentMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
@@ -102,6 +104,8 @@ namespace BLB.Api.Net
                 options.InstanceName = appSettings.CacheInstanceName;
             });
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddSingleton<ISecurityHelper, SecurityHelper>();
 
             services.AddScoped<IUserService, UserService>();
@@ -109,6 +113,10 @@ namespace BLB.Api.Net
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
+
+            services.AddScoped<IStoreHostNameRepository, StoreHostNameRepository>();
+            services.AddScoped<IStoreHostNameService, StoreHostNameService>();
+
             services.AddScoped<IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category>, CategoryDtoHydrator>();
         }
     }

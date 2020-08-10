@@ -31,20 +31,18 @@ namespace BLB.Api.Net.Services
 
         public IEnumerable<Category> GetAllCategories(long storeId)
         {
-            string jsonCategory;
+            string jsonCategories;
 
-            var cachedCategories = cache.Get($"categories:{storeId}");
+            var cachedCategories = cache.GetString($"categories:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = categoryRepository.GetAll(storeId);
-                jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                cache.Set($"categories:{storeId}", encodedCategory, cacheOptions);
+                jsonCategories = JsonConvert.SerializeObject(categories);
+                cache.SetString($"categories:{storeId}", jsonCategories, cacheOptions);
 
                 return categories;
             }
@@ -52,20 +50,18 @@ namespace BLB.Api.Net.Services
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync(long storeId)
         {
-            string jsonCategory;
+            string jsonCategories;
 
-            var cachedCategories = await cache.GetAsync($"categories:{storeId}");
+            var cachedCategories = await cache.GetStringAsync($"categories:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = await categoryRepository.GetAllAsync(storeId);
-                jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                await cache.SetAsync($"categories:{storeId}", encodedCategory, cacheOptions);
+                jsonCategories = JsonConvert.SerializeObject(categories);
+                await cache.SetStringAsync($"categories:{storeId}", jsonCategories, cacheOptions);
 
                 return categories;
             }
@@ -75,18 +71,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategory = cache.Get($"category:{storeId}:{categoryId}");
+            var cachedCategory = cache.GetString($"category:{storeId}:{categoryId}");
             if (cachedCategory != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategory);
-                return JsonConvert.DeserializeObject<Category>(jsonCategory);
+                return JsonConvert.DeserializeObject<Category>(cachedCategory);
             }
             else
             {
                 var category = categoryRepository.GetSingle(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(category);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                cache.Set($"category:{storeId}:{categoryId}", encodedCategory, cacheOptions);
+                cache.SetString($"category:{storeId}:{categoryId}", jsonCategory, cacheOptions);
 
                 return category;
             }
@@ -96,18 +90,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategory = await cache.GetAsync($"category:{storeId}:{categoryId}");
+            var cachedCategory = await cache.GetStringAsync($"category:{storeId}:{categoryId}");
             if (cachedCategory != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategory);
-                return JsonConvert.DeserializeObject<Category>(jsonCategory);
+                return JsonConvert.DeserializeObject<Category>(cachedCategory);
             }
             else
             {
                 var category = await categoryRepository.GetSingleAsync(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(category);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                await cache.SetAsync($"category:{storeId}:{categoryId}", encodedCategory, cacheOptions);
+                await cache.SetStringAsync($"category:{storeId}:{categoryId}", jsonCategory, cacheOptions);
 
                 return category;
             }
@@ -117,18 +109,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategories = cache.Get($"categories:children:{storeId}");
+            var cachedCategories = cache.GetString($"categories:children:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = categoryRepository.GetSingleWithChildren(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                cache.Set($"categories:children:{storeId}", encodedCategory, cacheOptions);
+                cache.SetString($"categories:children:{storeId}", jsonCategory, cacheOptions);
 
                 return categories;
             }
@@ -138,18 +128,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategories = await cache.GetAsync($"categories:children:{storeId}");
+            var cachedCategories = await cache.GetStringAsync($"categories:children:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = await categoryRepository.GetSingleWithChildrenAsync(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                await cache.SetAsync($"categories:children:{storeId}", encodedCategory, cacheOptions);
+                await cache.SetStringAsync($"categories:children:{storeId}", jsonCategory, cacheOptions);
 
                 return categories;
             }
@@ -159,18 +147,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategories = cache.Get($"categories:parents:{storeId}");
+            var cachedCategories = cache.GetString($"categories:parents:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = categoryRepository.GetSingleWithParents(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                cache.Set($"categories:parents:{storeId}", encodedCategory, cacheOptions);
+                cache.SetString($"categories:parents:{storeId}", jsonCategory, cacheOptions);
 
                 return categories;
             }
@@ -180,18 +166,16 @@ namespace BLB.Api.Net.Services
         {
             string jsonCategory;
 
-            var cachedCategories = await cache.GetAsync($"categories:parents:{storeId}");
+            var cachedCategories = await cache.GetStringAsync($"categories:parents:{storeId}");
             if (cachedCategories != null)
             {
-                jsonCategory = Encoding.UTF8.GetString(cachedCategories);
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(jsonCategory);
+                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
             }
             else
             {
                 var categories = await categoryRepository.GetSingleWithParentsAsync(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(categories);
-                var encodedCategory = Encoding.UTF8.GetBytes(jsonCategory);
-                await cache.SetAsync($"categories:parents:{storeId}", encodedCategory, cacheOptions);
+                await cache.SetStringAsync($"categories:parents:{storeId}", jsonCategory, cacheOptions);
 
                 return categories;
             }

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BLB.Domain.Net.Models
 {
-    public class StoreDomainName : BaseEntity
+    public class StoreHostName : BaseEntity
     {
-        public string DomainName { get; set; }
+        public string HostName { get; set; }
 
         [Required]
         [ForeignKey("Store")]

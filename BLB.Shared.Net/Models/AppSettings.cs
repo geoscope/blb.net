@@ -11,5 +11,7 @@
         public string CacheInstanceName { get; set; }
         public int AuthExpiryHours { get; set; }
         public int DefaultCacheMinutes { get; set; }
+        public long DefaultStoreId { get; set; }
+        public int StoreHostNameCacheMinutes { get; set; }
     }
 }
