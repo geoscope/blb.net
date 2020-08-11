@@ -19,7 +19,7 @@ namespace BLB.Domain.Net.Models
         public long Id { get; set; }
 
         [Required]
-        public bool IsDeleteted { get; set; }
+        public bool IsDeleted { get; set; }
 
         [Required]
         public bool IsEnabled { get; set; }

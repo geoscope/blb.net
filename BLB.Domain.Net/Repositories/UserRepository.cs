@@ -48,7 +48,7 @@ namespace BLB.Domain.Net.Repositories
             {
                 var hashedPassword = securityHelper.HashPassword(password, appSettings.SystemSalt, user.UserSalt);
 
-                var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"Password\"=@hashedPassword AND u.\"IsDeleteted\"=false AND u.\"IsEnabled\"=true;";
+                var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"Password\"=@hashedPassword AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
                 using (var conn = new NpgsqlConnection(connectionString))
                 {
@@ -88,7 +88,7 @@ namespace BLB.Domain.Net.Repositories
 
         public User GetByUserName(string username)
         {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleteted\"=false AND u.\"IsEnabled\"=true;";
+            var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -100,7 +100,7 @@ namespace BLB.Domain.Net.Repositories
 
         public async Task<User> GetByUserNameAsync(string username)
         {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleteted\"=false AND u.\"IsEnabled\"=true;";
+            var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -112,7 +112,7 @@ namespace BLB.Domain.Net.Repositories
 
         public User GetSingle(long id)
         {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"Id\"=@id AND u.\"IsDeleteted\"=false AND u.\"IsEnabled\"=true;";
+            var sql = "SELECT * FROM \"Users\" u WHERE u.\"Id\"=@id AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -124,7 +124,7 @@ namespace BLB.Domain.Net.Repositories
 
         public async Task<User> GetSingleAsync(long id)
         {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"Id\"=@id AND u.\"IsDeleteted\"=false AND u.\"IsEnabled\"=true;";
+            var sql = "SELECT * FROM \"Users\" u WHERE u.\"Id\"=@id AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {

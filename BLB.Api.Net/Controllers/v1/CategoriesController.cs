@@ -1,4 +1,5 @@
-﻿using BLB.Api.Net.Interfaces;
+﻿using BLB.Api.Net.Helpers;
+using BLB.Api.Net.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 
 namespace BLB.Api.Net.Controllers.v1
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -35,7 +37,7 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/categories/5
         [HttpGet("{id}")]
-        public Domain.Net.Models.Dto.Category Get(int id)
+        public Domain.Net.Models.Dto.Category Get(long id)
         {
             var categoryDto = categoryDtoHydrator.Hydrate(categoryService.GetCategory(storeId, id));
             return categoryDto;
@@ -43,7 +45,7 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/categories/1/children
         [HttpGet("{id}/children")]
-        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithChildren(int id)
+        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithChildren(long id)
         {
             var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithChildren(storeId, id).ToList());
             return categoriesDto;
@@ -51,7 +53,7 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/categories/1/parents
         [HttpGet("{id}/parents")]
-        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithParents(int id)
+        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithParents(long id)
         {
             var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithParents(storeId, id).ToList());
             return categoriesDto;

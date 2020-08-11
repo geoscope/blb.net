@@ -16,13 +16,13 @@ namespace BLB.Domain.Net.Models
         [Range(0, long.MaxValue)]
         public long? PrimaryProductImageId { get; set; }
 
-        public ICollection<ProductAttribute> ProductAttributes { get; }
+        public ICollection<ProductAttribute> ProductAttributes { get; set; }
 
-        public ICollection<ProductInCategory> ProductCategories { get; }
+        public ICollection<ProductInCategory> ProductCategories { get; set; }
 
-        public ICollection<ProductImage> ProductImages { get; }
+        public ICollection<ProductImage> ProductImages { get; set; }
 
-        public ICollection<ProductOption> ProductOptions { get; }
+        public ICollection<ProductOption> ProductOptions { get; set; }
 
         [Range(0, long.MaxValue)]
         public long? ProductSupplierId { get; set; }

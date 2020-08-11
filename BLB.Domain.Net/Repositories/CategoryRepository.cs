@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using BLB.Domain.Net.Interfaces;
 using BLB.Domain.Net.Models;
 using Dapper;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -42,7 +41,7 @@ namespace BLB.Domain.Net.Repositories
 
         public async Task<IEnumerable<Category>> GetAllAsync(long storeId)
         {
-            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"StoreId\"=@storeId AND c.\"IsDeleteted\"=false ORDER BY c.\"ParentCategoryId\" NULLS FIRST;";
+            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"StoreId\"=@storeId AND c.\"IsDeleted\"=false ORDER BY c.\"ParentCategoryId\" NULLS FIRST;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -54,7 +53,7 @@ namespace BLB.Domain.Net.Repositories
 
         public IEnumerable<Category> GetAll(long storeId)
         {
-            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"StoreId\"=@storeId AND c.\"IsDeleteted\"=false ORDER BY c.\"ParentCategoryId\" NULLS FIRST;";
+            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"StoreId\"=@storeId AND c.\"IsDeleted\"=false ORDER BY c.\"ParentCategoryId\" NULLS FIRST;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -66,7 +65,7 @@ namespace BLB.Domain.Net.Repositories
 
         public Category GetSingle(long storeId, long id)
         {
-            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"Id\"=@id AND c.\"StoreId\"=@storeId AND c.\"IsDeleteted\"=false;";
+            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"Id\"=@id AND c.\"StoreId\"=@storeId AND c.\"IsDeleted\"=false;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -78,7 +77,7 @@ namespace BLB.Domain.Net.Repositories
 
         public async Task<Category> GetSingleAsync(long storeId, long id)
         {
-            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"Id\"=@id AND c.\"StoreId\"=@storeId AND c.\"IsDeleteted\"=false;";
+            string sql = "SELECT * FROM \"Categories\" c WHERE c.\"Id\"=@id AND c.\"StoreId\"=@storeId AND c.\"IsDeleted\"=false;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {

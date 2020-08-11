@@ -60,7 +60,7 @@ namespace BLB.Domain.Net.Repositories
 
         public StoreHostName GetByHostName(string hostName)
         {
-            string sql = "SELECT * FROM \"StoreHostNames\" s WHERE s.\"HostName\" ILIKE @hostName AND s.\"IsEnabled\"=true AND s.\"IsDeleteted\"=false;";
+            string sql = "SELECT * FROM \"StoreHostNames\" s WHERE s.\"HostName\" ILIKE @hostName AND s.\"IsEnabled\"=true AND s.\"IsDeleted\"=false;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
@@ -72,7 +72,7 @@ namespace BLB.Domain.Net.Repositories
 
         public async Task<StoreHostName> GetByHostNameAsync(string hostName)
         {
-            string sql = "SELECT * FROM \"StoreHostNames\" s WHERE s.\"HostName\" ILIKE @hostName AND s.\"IsEnabled\"=true AND s.\"IsDeleteted\"=false;";
+            string sql = "SELECT * FROM \"StoreHostNames\" s WHERE s.\"HostName\" ILIKE @hostName AND s.\"IsEnabled\"=true AND s.\"IsDeleted\"=false;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
