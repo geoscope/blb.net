@@ -27,6 +27,44 @@ namespace BLB.Api.Net.Services
                 .SetSlidingExpiration(TimeSpan.FromMinutes(this.appSettings.DefaultCacheMinutes));
         }
 
+        public Product GetProduct(long storeId, long productId)
+        {
+            string jsonProduct;
+
+            var cachedProduct = cache.GetString($"products:store-id:{storeId}-{productId}");
+            if (cachedProduct != null)
+            {
+                return JsonConvert.DeserializeObject<Product>(cachedProduct);
+            }
+            else
+            {
+                var product = productRepository.GetSingle(storeId, productId);
+                jsonProduct = JsonConvert.SerializeObject(product);
+                cache.SetString($"products:store-id:{storeId}-{productId}", jsonProduct, cacheOptions);
+
+                return product;
+            }
+        }
+
+        public async Task<Product> GetProductAsync(long storeId, long productId)
+        {
+            string jsonProduct;
+
+            var cachedProduct = await cache.GetStringAsync($"products:store-id:{storeId}-{productId}");
+            if (cachedProduct != null)
+            {
+                return JsonConvert.DeserializeObject<Product>(cachedProduct);
+            }
+            else
+            {
+                var product = await productRepository.GetSingleAsync(storeId, productId);
+                jsonProduct = JsonConvert.SerializeObject(product);
+                await cache.SetStringAsync($"products:store-id:{storeId}-{productId}", jsonProduct, cacheOptions);
+
+                return product;
+            }
+        }
+
         public IEnumerable<Product> GetProductsByCategory(long storeId, long categoryId, int page = 1, int pageSize = 25)
         {
             string jsonProducts;

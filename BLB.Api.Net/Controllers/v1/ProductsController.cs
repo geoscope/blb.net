@@ -28,12 +28,20 @@ namespace BLB.Api.Net.Controllers.v1
             this.storeId = long.Parse(storeIdObj.ToString());
         }
 
-        // GET: api/v1/products/5
+        // GET: api/v1/products/category/5
         [HttpGet("category/{categoryId}")]
-        public IEnumerable<Domain.Net.Models.Dto.Product> Get(long categoryId, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public IEnumerable<Domain.Net.Models.Dto.Product> GetProductsByCategory(long categoryId, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
         {
             var productsDto = productDtoHydrator.HydrateList(productService.GetProductsByCategory(storeId, categoryId, page, pageSize).ToList());
             return productsDto;
+        }
+
+        // GET: api/v1/products/5
+        [HttpGet("{productId}")]
+        public Domain.Net.Models.Dto.Product GetProduct(long productId)
+        {
+            var productDto = productDtoHydrator.Hydrate(productService.GetProduct(storeId, productId));
+            return productDto;
         }
 
     }
