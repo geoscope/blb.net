@@ -5,8 +5,6 @@ namespace BLB.Api.Net.interfaces
 {
     public interface IStoreHostNameService
     {
-        StoreHostName GetStoreHostName(string hostName);
-
         Task<StoreHostName> GetStoreHostNameAsync(string hostName);
     }
 }

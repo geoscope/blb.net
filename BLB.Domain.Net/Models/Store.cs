@@ -31,6 +31,8 @@ namespace BLB.Domain.Net.Models
 
         public ICollection<User> StoreUsers { get; }
 
+        public ICollection<Order> StoreOrders { get; }
+
         [StringLength(512)]
         public string Summary { get; set; }
     }

@@ -29,20 +29,15 @@ namespace BLB.Domain.Net.Repositories
             this.securityHelper = securityHelper;
         }
 
-        public long Add(User record)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<long> AddAsync(User record)
         {
             throw new NotImplementedException();
         }
 
-        public User AuthenticateUser(string username, string password)
+        public async Task<User> AuthenticateUserAsync(string username, string password)
         {
             // Get the user record - for the salt
-            var user = GetByUserName(username);
+            var user = await GetByUserNameAsync(username).ConfigureAwait(false);
 
             if (user != null)
             {
@@ -52,7 +47,7 @@ namespace BLB.Domain.Net.Repositories
 
                 using (var conn = new NpgsqlConnection(connectionString))
                 {
-                    var authenticatedUser = conn.Query<User>(sql, new { username, hashedPassword });
+                    var authenticatedUser = await conn.QueryAsync<User>(sql, new { username, hashedPassword }).ConfigureAwait(false);
 
                     return authenticatedUser.FirstOrDefault();
                 }
@@ -61,22 +56,7 @@ namespace BLB.Domain.Net.Repositories
             return null;
         }
 
-        public Task<User> AuthenticateUserAsync(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete(User record)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> DeleteAsync(User record)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<User> GetAll()
         {
             throw new NotImplementedException();
         }
@@ -86,37 +66,13 @@ namespace BLB.Domain.Net.Repositories
             throw new NotImplementedException();
         }
 
-        public User GetByUserName(string username)
-        {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
-
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                var user = conn.Query<User>(sql, new { username });
-
-                return user.First();
-            }
-        }
-
         public async Task<User> GetByUserNameAsync(string username)
         {
             var sql = "SELECT * FROM \"Users\" u WHERE u.\"UserName\"=@username AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                var user = await conn.QueryAsync<User>(sql, new { username });
-
-                return user.First();
-            }
-        }
-
-        public User GetSingle(long id)
-        {
-            var sql = "SELECT * FROM \"Users\" u WHERE u.\"Id\"=@id AND u.\"IsDeleted\"=false AND u.\"IsEnabled\"=true;";
-
-            using (var conn = new NpgsqlConnection(connectionString))
-            {
-                var user = conn.Query<User>(sql, new { id });
+                var user = await conn.QueryAsync<User>(sql, new { username }).ConfigureAwait(false);
 
                 return user.First();
             }
@@ -128,15 +84,10 @@ namespace BLB.Domain.Net.Repositories
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                var user = await conn.QueryAsync<User>(sql, new { id });
+                var user = await conn.QueryAsync<User>(sql, new { id }).ConfigureAwait(false);
 
                 return user.First();
             }
-        }
-
-        public bool Update(User record)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<bool> UpdateAsync(User record)

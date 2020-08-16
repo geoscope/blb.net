@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BLB.Api.Net.Controllers.v1
 {
@@ -29,33 +30,33 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/categories
         [HttpGet]
-        public IEnumerable<Domain.Net.Models.Dto.Category> Get()
+        public async Task<IEnumerable<Domain.Net.Models.Dto.Category>> Get()
         {
-            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetAllCategories(storeId).ToList());
+            var categoriesDto = categoryDtoHydrator.HydrateList((await categoryService.GetAllCategoriesAsync(storeId)).ToList());
             return categoriesDto;
         }
 
         // GET: api/v1/categories/5
         [HttpGet("{id}")]
-        public Domain.Net.Models.Dto.Category Get(long id)
+        public async Task<Domain.Net.Models.Dto.Category> Get(long id)
         {
-            var categoryDto = categoryDtoHydrator.Hydrate(categoryService.GetCategory(storeId, id));
+            var categoryDto = categoryDtoHydrator.Hydrate(await categoryService.GetCategoryAsync(storeId, id));
             return categoryDto;
         }
 
         // GET: api/v1/categories/1/children
         [HttpGet("{id}/children")]
-        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithChildren(long id)
+        public async Task<ICollection<Domain.Net.Models.Dto.Category>> GetCategoryWithChildren(long id)
         {
-            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithChildren(storeId, id).ToList());
+            var categoriesDto = categoryDtoHydrator.HydrateList((await categoryService.GetCategoryWithChildrenAsync(storeId, id)).ToList());
             return categoriesDto;
         }
 
         // GET: api/v1/categories/1/parents
         [HttpGet("{id}/parents")]
-        public ICollection<Domain.Net.Models.Dto.Category> GetCategoryWithParents(long id)
+        public async Task<ICollection<Domain.Net.Models.Dto.Category>> GetCategoryWithParents(long id)
         {
-            var categoriesDto = categoryDtoHydrator.HydrateList(categoryService.GetCategoryWithParents(storeId, id).ToList());
+            var categoriesDto = categoryDtoHydrator.HydrateList((await categoryService.GetCategoryWithParentsAsync(storeId, id)).ToList());
             return categoriesDto;
         }
     }

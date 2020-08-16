@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using BLB.Api.Net.interfaces;
 using BLB.Domain.Net.Interfaces;
@@ -25,25 +24,6 @@ namespace BLB.Api.Net.Services
             this.appSettings = appSettings.Value;
             this.cacheOptions = new DistributedCacheEntryOptions()
                 .SetSlidingExpiration(TimeSpan.FromMinutes(this.appSettings.StoreHostNameCacheMinutes));
-        }
-
-        public StoreHostName GetStoreHostName(string hostName)
-        {
-            string jsonStoreHostName;
-
-            var cachedStoreHostName = cache.GetString($"storehostname:{hostName}");
-            if (cachedStoreHostName != null)
-            {
-                return JsonConvert.DeserializeObject<StoreHostName>(cachedStoreHostName);
-            }
-            else
-            {
-                var storeHostName = hostNameRepository.GetByHostName(hostName);
-                jsonStoreHostName = JsonConvert.SerializeObject(storeHostName);
-                cache.SetString($"storehostname:{hostName}", jsonStoreHostName, cacheOptions);
-
-                return storeHostName;
-            }
         }
 
         public async Task<StoreHostName> GetStoreHostNameAsync(string hostName)

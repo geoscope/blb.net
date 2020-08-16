@@ -1,9 +1,7 @@
 ﻿namespace BLB.Domain.Net.Models.Dto
 {
-    public class Category : BaseView
+    public class Country : BaseView
     {
         public string Name { get; set; }
-
-        public long? ParentCategoryId { get; set; }
     }
 }

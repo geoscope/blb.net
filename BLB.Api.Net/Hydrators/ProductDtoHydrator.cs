@@ -28,7 +28,13 @@ namespace BLB.Api.Net.Hydrators
             return new Domain.Net.Models.Dto.Product()
             {
                 Id = obj.Id,
-                Name = obj.Name
+                Code = obj.Code,
+                Name = obj.Name,
+                Description = obj.Description,
+                Sku = obj.Sku,
+                StockBackOrderEstimatedArrival = obj.StockBackOrderEstimatedArrival,
+                StockOnBackOrder = obj.StockOnBackOrder,
+                StockOnHand = obj.StockOnHand
             };
         }
     }

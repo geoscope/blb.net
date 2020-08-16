@@ -1,4 +1,5 @@
-﻿using BLB.Api.Net.Interfaces;
+﻿using System.Threading.Tasks;
+using BLB.Api.Net.Interfaces;
 using BLB.Api.Net.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,9 @@ namespace BLB.Api.Net.Controllers.v1
         }
 
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticateRequest model)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequest model)
         {
-            var response = userService.Authenticate(model);
+            var response = await userService.AuthenticateAsync(model);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });

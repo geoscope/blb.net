@@ -16,10 +16,13 @@ namespace BLB.Domain.Net.Models
         public OrderStatus OrderStatus { get; set; }
 
         [ForeignKey("Address")]
-        public long ShippingAddressId { get; set; }
+        public long? ShippingAddressId { get; set; }
 
         [ForeignKey("User")]
         public long UserId { get; set; }
+
+        [ForeignKey("Store")]
+        public long StoreId { get; set; }
 
         //TODO: Shipping will be handled via a plugin
 

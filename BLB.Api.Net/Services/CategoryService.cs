@@ -1,7 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using BLB.Api.Net.Interfaces;
 using BLB.Domain.Net.Interfaces;
@@ -29,25 +27,6 @@ namespace BLB.Api.Net.Services
                 .SetSlidingExpiration(TimeSpan.FromMinutes(this.appSettings.DefaultCacheMinutes));
         }
 
-        public IEnumerable<Category> GetAllCategories(long storeId)
-        {
-            string jsonCategories;
-
-            var cachedCategories = cache.GetString($"categories:{storeId}");
-            if (cachedCategories != null)
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
-            }
-            else
-            {
-                var categories = categoryRepository.GetAll(storeId);
-                jsonCategories = JsonConvert.SerializeObject(categories);
-                cache.SetString($"categories:{storeId}", jsonCategories, cacheOptions);
-
-                return categories;
-            }
-        }
-
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync(long storeId)
         {
             string jsonCategories;
@@ -64,25 +43,6 @@ namespace BLB.Api.Net.Services
                 await cache.SetStringAsync($"categories:{storeId}", jsonCategories, cacheOptions);
 
                 return categories;
-            }
-        }
-
-        public Category GetCategory(long storeId, long categoryId)
-        {
-            string jsonCategory;
-
-            var cachedCategory = cache.GetString($"category:{storeId}:{categoryId}");
-            if (cachedCategory != null)
-            {
-                return JsonConvert.DeserializeObject<Category>(cachedCategory);
-            }
-            else
-            {
-                var category = categoryRepository.GetSingle(storeId, categoryId);
-                jsonCategory = JsonConvert.SerializeObject(category);
-                cache.SetString($"category:{storeId}:{categoryId}", jsonCategory, cacheOptions);
-
-                return category;
             }
         }
 
@@ -105,25 +65,6 @@ namespace BLB.Api.Net.Services
             }
         }
 
-        public IEnumerable<Category> GetCategoryWithChildren(long storeId, long categoryId)
-        {
-            string jsonCategory;
-
-            var cachedCategories = cache.GetString($"categories:children:{storeId}");
-            if (cachedCategories != null)
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
-            }
-            else
-            {
-                var categories = categoryRepository.GetSingleWithChildren(storeId, categoryId);
-                jsonCategory = JsonConvert.SerializeObject(categories);
-                cache.SetString($"categories:children:{storeId}", jsonCategory, cacheOptions);
-
-                return categories;
-            }
-        }
-
         public async Task<IEnumerable<Category>> GetCategoryWithChildrenAsync(long storeId, long categoryId)
         {
             string jsonCategory;
@@ -138,25 +79,6 @@ namespace BLB.Api.Net.Services
                 var categories = await categoryRepository.GetSingleWithChildrenAsync(storeId, categoryId);
                 jsonCategory = JsonConvert.SerializeObject(categories);
                 await cache.SetStringAsync($"categories:children:{storeId}", jsonCategory, cacheOptions);
-
-                return categories;
-            }
-        }
-
-        public IEnumerable<Category> GetCategoryWithParents(long storeId, long categoryId)
-        {
-            string jsonCategory;
-
-            var cachedCategories = cache.GetString($"categories:parents:{storeId}");
-            if (cachedCategories != null)
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<Category>>(cachedCategories);
-            }
-            else
-            {
-                var categories = categoryRepository.GetSingleWithParents(storeId, categoryId);
-                jsonCategory = JsonConvert.SerializeObject(categories);
-                cache.SetString($"categories:parents:{storeId}", jsonCategory, cacheOptions);
 
                 return categories;
             }

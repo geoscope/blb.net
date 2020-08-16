@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using BLB.Api.Net.Interfaces;
 using BLB.Api.Net.Models;
 using BLB.Domain.Net.Interfaces;
@@ -24,9 +25,9 @@ namespace BLB.Api.Net.Services
             this.userRepository = userRepository;
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
         {
-            var user = userRepository.AuthenticateUser(model.Username, model.Password);
+            var user = await userRepository.AuthenticateUserAsync(model.Username, model.Password);
 
             if (user == null)
                 return null;
@@ -37,14 +38,9 @@ namespace BLB.Api.Net.Services
             return new AuthenticateResponse(user, token);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<User> GetByIdAsync(long id)
         {
-            return userRepository.GetAll();
-        }
-
-        public User GetById(long id)
-        {
-            return userRepository.GetSingle(id);
+            return await userRepository.GetSingleAsync(id);
         }
 
         // helper methods

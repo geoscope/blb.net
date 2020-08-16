@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BLB.Api.Net.Helpers;
 using BLB.Api.Net.interfaces;
 using BLB.Api.Net.Interfaces;
@@ -30,17 +31,17 @@ namespace BLB.Api.Net.Controllers.v1
 
         // GET: api/v1/products/category/5
         [HttpGet("category/{categoryId}")]
-        public IEnumerable<Domain.Net.Models.Dto.Product> GetProductsByCategory(long categoryId, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
+        public async Task<IEnumerable<Domain.Net.Models.Dto.Product>> GetProductsByCategory(long categoryId, [FromQuery] int page = 1, [FromQuery] int pageSize = 25)
         {
-            var productsDto = productDtoHydrator.HydrateList(productService.GetProductsByCategory(storeId, categoryId, page, pageSize).ToList());
+            var productsDto = productDtoHydrator.HydrateList((await productService.GetProductsByCategoryAsync(storeId, categoryId, page, pageSize)).ToList());
             return productsDto;
         }
 
         // GET: api/v1/products/5
         [HttpGet("{productId}")]
-        public Domain.Net.Models.Dto.Product GetProduct(long productId)
+        public async Task<Domain.Net.Models.Dto.Product> GetProduct(long productId)
         {
-            var productDto = productDtoHydrator.Hydrate(productService.GetProduct(storeId, productId));
+            var productDto = productDtoHydrator.Hydrate(await productService.GetProductAsync(storeId, productId));
             return productDto;
         }
 
