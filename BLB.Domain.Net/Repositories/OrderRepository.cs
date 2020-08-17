@@ -6,6 +6,7 @@ using BLB.Domain.Net.Interfaces;
 using BLB.Domain.Net.Models;
 using BLB.Domain.Net.Models.Enums;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -25,11 +26,43 @@ namespace BLB.Domain.Net.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<long> AddOrderItemAsync(long storeId, long userId, OrderItem item)
+        public async Task<long> AddOrderItemAsync(long storeId, long userId, OrderItem item)
         {
-            // get open order id - if null create a new order
+            if (item == null)
+                throw new ArgumentException("Invalid order item");
 
-            throw new NotImplementedException();
+            var order = await GetOrderByStatusAsync(storeId, userId, OrderStatus.Open).ConfigureAwait(false);
+
+            long orderId;
+            if (order != null)
+            {
+                orderId = order.Id;
+            }
+            else
+            {
+                var currentDateTime = DateTime.UtcNow;
+                orderId = await AddAsync(storeId, userId, new Order()
+                {
+                    CreatedAt = currentDateTime,
+                    CreatedBy = userId,
+                    ModifiedAt = currentDateTime,
+                    ModifiedBy = userId,
+                    StoreId = storeId,
+                    UserId = userId,
+                    OrderStatus = OrderStatus.Open,
+                    IsDeleted = false,
+                    IsEnabled = true
+                }).ConfigureAwait(false);
+            }
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                conn.Open();
+
+                var orderItemId = await conn.InsertAsync(new OrderItem { OrderId = orderId, ProductId = item.ProductId, ProductOptionId = item.ProductOptionId, Quantity = item.Quantity }).ConfigureAwait(false);
+
+                return orderItemId;
+            }
         }
 
         public Task<bool> DeleteAsync(long storeId, long userId, long id)
@@ -37,14 +70,36 @@ namespace BLB.Domain.Net.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteOrderItemAsync(long storeId, long userId, long orderItemId)
+        public async Task<bool> DeleteOrderItemAsync(long storeId, long userId, long orderItemId)
         {
-            throw new NotImplementedException();
+            string sql = @"UPDATE ""OrderItems""
+                SET ""IsDeleted"" = false
+                FROM ""OrderItems"" oi
+                INNER JOIN ""Orders"" o on o.""Id"" = oi.""OrderId""
+                WHERE o.""StoreId"" = @storeId
+                    AND o.""UserId"" = @userId
+                    AND o.""OrderStatus"" = @orderStatus
+                    AND o.""IsDeleted"" = false
+                    AND oi.""Id"" = @orderItemId;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var result = await conn.ExecuteAsync(sql, new { storeId, userId, orderItemId, orderStatus = OrderStatus.Open }).ConfigureAwait(false);
+
+                return true;
+            }
         }
 
-        public Task<IEnumerable<Order>> GetAllAsync(long storeId, long userId)
+        public async Task<IEnumerable<Order>> GetAllAsync(long storeId, long userId)
         {
-            throw new NotImplementedException();
+            string sql = "SELECT * FROM \"Orders\" o WHERE o.\"StoreId\"=@storeId AND o.\"UserId\"=@userId AND o.\"OrderStatus\"<>@orderStatus AND o.\"IsDeleted\"=false;";
+
+            using (var conn = new NpgsqlConnection(connectionString))
+            {
+                var orders = await conn.QueryAsync<Order>(sql, new { storeId, userId, orderStatus = OrderStatus.Open }).ConfigureAwait(false);
+
+                return orders.ToList();
+            }
         }
 
         public async Task<Order> GetOrderByStatusAsync(long storeId, long userId, OrderStatus orderStatus)
@@ -53,9 +108,9 @@ namespace BLB.Domain.Net.Repositories
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                var category = await conn.QueryAsync<Order>(sql, new { storeId, userId, orderStatus }).ConfigureAwait(false);
+                var order = await conn.QueryAsync<Order>(sql, new { storeId, userId, orderStatus }).ConfigureAwait(false);
 
-                return category.FirstOrDefault();
+                return order.FirstOrDefault();
             }
         }
 
@@ -65,9 +120,9 @@ namespace BLB.Domain.Net.Repositories
 
             using (var conn = new NpgsqlConnection(connectionString))
             {
-                var category = await conn.QueryAsync<Order>(sql, new { storeId, userId, id }).ConfigureAwait(false);
+                var order = await conn.QueryAsync<Order>(sql, new { storeId, userId, id }).ConfigureAwait(false);
 
-                return category.FirstOrDefault();
+                return order.FirstOrDefault();
             }
         }
 

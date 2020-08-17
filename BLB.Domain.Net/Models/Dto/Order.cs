@@ -7,7 +7,7 @@ namespace BLB.Domain.Net.Models.Dto
     {
         public string Name { get; set; }
 
-        public ICollection<OrderItem> OrderItems { get; }
+        public ICollection<OrderItem> OrderItems { get; set; }
 
         public OrderStatus OrderStatus { get; set; }
 

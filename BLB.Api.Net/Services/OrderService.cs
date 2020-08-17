@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLB.Api.Net.interfaces;
 using BLB.Domain.Net.Interfaces;
@@ -36,6 +37,13 @@ namespace BLB.Api.Net.Services
             var order = await orderRepository.GetSingleAsync(storeId, userId, orderId);
 
             return order;
+        }
+
+        public async Task<IEnumerable<Order>> GetOrdersByUserAsync(long storeId, long userId)
+        {
+            var orders = await orderRepository.GetAllAsync(storeId, userId);
+
+            return orders;
         }
 
         public async Task<bool> RemoveItemFromOrderAsync(long storeId, long userId, long orderItemId)

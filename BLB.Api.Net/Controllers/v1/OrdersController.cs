@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using BLB.Api.Net.Helpers;
 using BLB.Api.Net.interfaces;
 using BLB.Api.Net.Interfaces;
@@ -16,7 +18,7 @@ namespace BLB.Api.Net.Controllers.v1
     {
         private readonly IHttpContextAccessor httpContextAccessor;
         public IOrderService orderService { get; }
-        private readonly object orderDtoHydrator;
+        private readonly IGenericHydrator<Domain.Net.Models.Order, Domain.Net.Models.Dto.Order> orderDtoHydrator;
         private readonly long storeId;
 
         public OrdersController(IHttpContextAccessor httpContextAccessor, IOrderService orderService, IGenericHydrator<Domain.Net.Models.Order, Domain.Net.Models.Dto.Order> orderDtoHydrator)
@@ -29,18 +31,19 @@ namespace BLB.Api.Net.Controllers.v1
             this.storeId = long.Parse(storeIdObj.ToString());
         }
 
-        // GET: api/values
+        // GET: api/orders
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<Domain.Net.Models.Dto.Order>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var orders = orderDtoHydrator.HydrateList((await this.orderService.GetOrdersByUserAsync(this.storeId, 1)).ToList());
+            return orders;
         }
 
-        // GET api/values/5
+        // GET api/orders/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Task<Domain.Net.Models.Dto.Order> Get(int id)
         {
-            return "value";
+            return null;
         }
 
         // POST api/values
@@ -55,7 +58,7 @@ namespace BLB.Api.Net.Controllers.v1
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/orders/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

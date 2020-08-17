@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLB.Domain.Net.Models;
 
@@ -9,6 +10,8 @@ namespace BLB.Api.Net.interfaces
         Task<Order> GetCurrentOrderAsync(long storeId, long userId);
 
         Task<Order> GetOrderAsync(long storeId, long userId, long orderId);
+
+        Task<IEnumerable<Order>> GetOrdersByUserAsync(long storeId, long userId);
 
         Task<long> AddOrUpdateItemInOrderAsync(long storeId, long userId, OrderItem item);
 
