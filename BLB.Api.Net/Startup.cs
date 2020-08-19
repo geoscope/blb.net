@@ -117,11 +117,15 @@ namespace BLB.Api.Net
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
 
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderService>();
+
             services.AddScoped<IStoreHostNameRepository, StoreHostNameRepository>();
             services.AddScoped<IStoreHostNameService, StoreHostNameService>();
 
             services.AddScoped<IGenericHydrator<Domain.Net.Models.Category, Domain.Net.Models.Dto.Category>, CategoryDtoHydrator>();
             services.AddScoped<IGenericHydrator<Domain.Net.Models.Product, Domain.Net.Models.Dto.Product>, ProductDtoHydrator>();
+            services.AddScoped<IGenericHydrator<Domain.Net.Models.Order, Domain.Net.Models.Dto.Order>, OrderDtoHydrator>();
         }
     }
 }
